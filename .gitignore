@@ -2,11 +2,11 @@
 key/
 keys/
 keypair/
-backup/
 
-# builds
+# builds & backups
 dist/
 build/
+backup/
 
 # dotenv environment variables file
 .env
