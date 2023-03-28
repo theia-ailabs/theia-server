@@ -26,10 +26,10 @@ export const socketConnect = (io: Server): void => {
 };
 
 const askTheiaSocket = (socket: Socket): void => {
-  const openaiApi = new OpenaiApi();
+  const openai = new OpenaiApi();
   socket.on("askTheia", async (question: string) => {
     if (question.length > 22) {
-      socket.emit("Theia", await openaiApi.askChatGPT(question));
+      socket.emit("Theia", await openai.askChatGPT(question));
     } else {
       const msgErr = `❌ ERROR: getUserFeed socket input is wrong. Check pubkey arg!`;
       socket.emit("Theia", msgErr);
