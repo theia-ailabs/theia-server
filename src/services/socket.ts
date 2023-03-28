@@ -1,4 +1,5 @@
 import { Server, Socket } from "socket.io";
+import { OpenaiApi } from "./apis/openai";
 
 export let usersConnected: number = 0;
 
@@ -25,12 +26,13 @@ export const socketConnect = (io: Server): void => {
 };
 
 const askTheiaSocket = (socket: Socket): void => {
-  socket.on("welcome", async (id: string) => {
-    if (id.length > 22) {
-      socket.emit("welcomeRes", "Hello, world!");
+  const openaiApi = new OpenaiApi();
+  socket.on("askTheia", async (question: string) => {
+    if (question.length > 22) {
+      socket.emit("Theia", openaiApi.askChatGPT(question));
     } else {
       const msgErr = `❌ ERROR: getUserFeed socket input is wrong. Check pubkey arg!`;
-      socket.emit("welcomeRes", msgErr);
+      socket.emit("Theia", msgErr);
       console.log("printLogs", msgErr);
     }
   });
