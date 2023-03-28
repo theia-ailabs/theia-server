@@ -207,8 +207,6 @@ yarn.lock
 yarn-error.log
 package-lock.json
 .vscode/
+
 # macOS
 .DS_Store
-
-
-
