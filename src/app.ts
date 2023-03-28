@@ -21,6 +21,8 @@ export const io: any = new Server(server, {
   cors: {
     origin: [
       "*", // Remove in production
+      "thei.app",
+      "ia.estate",
     ],
     methods: ["GET", "POST"],
   },
