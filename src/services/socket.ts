@@ -1,9 +1,4 @@
 import { Server, Socket } from "socket.io";
-import userSocket from "./sockets/users.socket";
-import messagesSocket from "./sockets/messages.socket";
-import nftsSocket from "./sockets/nfts.socket";
-import tokenSocket from "./sockets/token.socket";
-import servicesSocket from "./sockets/services.socket";
 
 export let usersConnected: number = 0;
 
@@ -30,12 +25,12 @@ export const socketConnect = (io: Server): void => {
 };
 
 const askTheiaSocket = (socket: Socket): void => {
-  socket.on("getUserFeed", async (pubkey: string) => {
-    if (pubkey.length > 22) {
-      socket.emit("getUserFeedRes", await getUserFeed(pubkey));
+  socket.on("welcome", async (id: string) => {
+    if (id.length > 22) {
+      socket.emit("welcomeRes", "Hello, world!");
     } else {
       const msgErr = `❌ ERROR: getUserFeed socket input is wrong. Check pubkey arg!`;
-      socket.emit("getUserFeedRes", msgErr);
+      socket.emit("welcomeRes", msgErr);
       console.log("printLogs", msgErr);
     }
   });
