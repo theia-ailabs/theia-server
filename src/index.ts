@@ -1,11 +1,9 @@
+// import and run server
 import { server, io } from "./app";
-import { socketConnect } from "./services/sockets";
-import getBalances from "./services/wallet/getBalances";
 import { getTime } from "./utils";
 
 server.listen(process.env.PORT, () => {
   console.log("Server running on port ", process.env.PORT);
-  getBalances();
   setInterval(() => {
     const time = getTime();
     if (time.split(":")[2] == "00") {
@@ -16,10 +14,10 @@ server.listen(process.env.PORT, () => {
         time.split(":")[1] == "30" ||
         time.split(":")[1] == "45"
       ) {
-        getBalances();
+        // Do something
       }
     }
   }, 1000);
-  socketConnect(io);
+  //socketConnect(io);
   console.log(process.version);
 });
