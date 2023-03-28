@@ -1,23 +1,17 @@
 // import and run server
 import { server, io } from "./app";
+import { socketConnect } from "./services/socket";
+import { PORT } from "./config";
 import { getTime } from "./utils";
 
-server.listen(process.env.PORT, () => {
-  console.log("Server running on port ", process.env.PORT);
+server.listen(PORT, () => {
+  console.log("Server running on port ", PORT);
+  socketConnect(io);
+  console.log(process.version);
   setInterval(() => {
     const time = getTime();
     if (time.split(":")[2] == "00") {
       console.log(time);
-      if (
-        time.split(":")[1] == "00" ||
-        time.split(":")[1] == "15" ||
-        time.split(":")[1] == "30" ||
-        time.split(":")[1] == "45"
-      ) {
-        // Do something
-      }
     }
   }, 1000);
-  //socketConnect(io);
-  console.log(process.version);
 });
