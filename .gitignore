@@ -2,6 +2,7 @@
 key/
 keys/
 keypair/
+backup/
 
 # builds
 dist/
