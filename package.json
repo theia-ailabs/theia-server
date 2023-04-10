@@ -71,7 +71,7 @@
     "utf-8-validate": "^5.0.10"
   },
   "engines": {
-    "node": "18"
+    "node": "16"
   },
   "private": true
 }
