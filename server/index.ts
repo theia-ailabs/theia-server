@@ -1,6 +1,6 @@
 // import and run server
 import { server, io } from "./app";
-import { socketConnect } from "./services/socket";
+import { socketConnect } from "./services/sockets";
 import { PORT } from "./config";
 import { getTime } from "./utils";
 

@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { OpenaiApi } from "./apis/openai";
+import { OpenaiApi } from "../apis/openai";
 
 export let usersConnected: number = 0;
 
