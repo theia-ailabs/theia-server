@@ -4,9 +4,9 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "start": "ts-node-esm ./src/index.ts",
+    "start": "ts-node-esm ./server/index.ts",
     "build": "tsc -p .",
-    "dev": "nodemon ./src/index.ts",
+    "dev": "nodemon ./server/index.ts",
     "test": "jest",
     "deploy": "yarn && yarn build"
   },
