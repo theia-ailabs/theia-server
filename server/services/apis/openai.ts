@@ -11,8 +11,10 @@ export async function askChatGPT(question: string): Promise<string | false> {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: question,
+      max_tokens: 1024,
     });
     const ans = completion.data.choices[0].text as string;
+    console.log(ans);
     return ans;
   } catch (error: any) {
     if (error.response) {
@@ -25,4 +27,6 @@ export async function askChatGPT(question: string): Promise<string | false> {
   }
 }
 
-// askChatGPT("Hello, how are you?");
+askChatGPT(
+  "Hola theia que tal estas? cuentame la relatividad de manera simplificada"
+);
