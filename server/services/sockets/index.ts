@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { OpenaiApi } from "../apis/openai";
+import { askChatGPT } from "../apis/openai";
 
 export let usersConnected: number = 0;
 
@@ -21,18 +21,27 @@ export const socketConnect = (io: Server): void => {
       console.log("ERROR: Socket error:\n", err);
     });
     // Sockets
+    searchUserSocket(socket);
     askTheiaSocket(socket);
   });
 };
 
+const searchUserSocket = (socket: Socket): void => {
+  socket.on("username", (username: string) => {
+    console.log(username);
+    socket.emit("username", false);
+  });
+};
+
 const askTheiaSocket = (socket: Socket): void => {
-  const openai = new OpenaiApi();
-  socket.on("theiaMessage", async (question: string) => {
-    if (question.length > 22) {
-      const response = await openai.askChatGPT(question);
-      socket.emit("Theia", response);
+  socket.on("askTheia", async (question: string) => {
+    if (question) {
+      console.log(question);
+      const response = await askChatGPT(question);
+      console.log(response);
+      socket.emit("theiaRes", response);
     } else {
-      const msgErr = `❌ ERROR: getUserFeed socket input is wrong. Check pubkey arg!`;
+      const msgErr = `❌ ERROR: Input msg wrong. Min length: 22.`;
       socket.emit("Theia", msgErr);
       console.log("printLogs", msgErr);
     }
