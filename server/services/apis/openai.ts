@@ -27,6 +27,6 @@ export async function askChatGPT(question: string): Promise<string | false> {
   }
 }
 
-askChatGPT(
-  "Hola theia que tal estas? cuentame la relatividad de manera simplificada"
-);
+// askChatGPT(
+//   "Hola theia que tal estas? cuentame la relatividad de manera simplificada"
+// );
