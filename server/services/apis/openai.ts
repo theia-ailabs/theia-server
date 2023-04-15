@@ -8,12 +8,15 @@ const openai = new OpenAIApi(configuration);
 
 export async function askChatGPT(question: string): Promise<string | false> {
   try {
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: question,
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "You are an assistant called Theia." },
+        { role: "user", content: question },
+      ],
       max_tokens: 1024,
     });
-    const ans = completion.data.choices[0].text as string;
+    const ans = completion.data.choices[0].message?.content as string;
     console.log(ans);
     return ans;
   } catch (error: any) {
@@ -27,6 +30,6 @@ export async function askChatGPT(question: string): Promise<string | false> {
   }
 }
 
-// askChatGPT(
-//   "Hola theia que tal estas? cuentame la relatividad de manera simplificada"
-// );
+askChatGPT(
+  "Hola theia que tal estas? cuentame la relatividad de manera simplificada"
+);
