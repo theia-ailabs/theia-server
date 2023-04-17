@@ -1,6 +1,5 @@
 import { Server, Socket } from "socket.io";
 import { askChatGPT } from "../apis/openai";
-import { genSpeech } from "../apis/play-ht";
 
 export let usersConnected: number = 0;
 
@@ -40,18 +39,11 @@ const askTheiaSocket = (socket: Socket): void => {
       console.log(question);
       const response = await askChatGPT(question);
       console.log(response);
-      const speech = await genSpeech(response as string, "alphonso", 1);
-      const ret = {
-        text: response,
-        audio: speech.url,
-        duration: speech.duration,
-        size: speech.size,
-      }
-      socket.emit("theiaRes", ret);
+      socket.emit("theiaRes", response);
     } else {
-      const msgErr = `❌ ERROR: Input msg wrong.`;
-      socket.emit("theiaRes", msgErr);
-      console.log("askTheiaSocket", msgErr);
+      const msgErr = `❌ ERROR: Input msg wrong. Min length: 22.`;
+      socket.emit("Theia", msgErr);
+      console.log("printLogs", msgErr);
     }
   });
 };

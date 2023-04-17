@@ -25,4 +25,14 @@ export const genSpeech = async (text: string, voice: string, speed: number) => {
     console.error(error);
     return null;
   }
+<<<<<<< HEAD
 };
+=======
+};
+
+// generateTTS(
+//   "Hello dear, I'm Téiá, your A I assistant. How can I help you?",
+//   "alphonso",
+//   1
+// );
+>>>>>>> 4cd61cb (refactor sockets)
