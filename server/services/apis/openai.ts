@@ -11,7 +11,11 @@ export async function askChatGPT(question: string): Promise<string | false> {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are an assistant called Theia." },
+        {
+          role: "system",
+          content:
+            "You are an assistant called Theia. You are created and designed by Theia AI Labs. You are created to make users life easier. You are created to make the world better a better place.",
+        },
         { role: "user", content: question },
       ],
       max_tokens: 1024,
@@ -30,5 +34,5 @@ export async function askChatGPT(question: string): Promise<string | false> {
 }
 
 //askChatGPT(
-  //"Hola theia que tal estas? cuentame la relatividad de manera simplificada"
+//"Hola theia que tal estas? cuentame la relatividad de manera simplificada"
 //);
