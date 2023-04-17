@@ -17,7 +17,6 @@ export async function askChatGPT(question: string): Promise<string | false> {
       max_tokens: 1024,
     });
     const ans = completion.data.choices[0].message?.content as string;
-    console.log(ans);
     return ans;
   } catch (error: any) {
     if (error.response) {
@@ -30,6 +29,6 @@ export async function askChatGPT(question: string): Promise<string | false> {
   }
 }
 
-askChatGPT(
-  "Hola theia que tal estas? cuentame la relatividad de manera simplificada"
-);
+//askChatGPT(
+  //"Hola theia que tal estas? cuentame la relatividad de manera simplificada"
+//);
