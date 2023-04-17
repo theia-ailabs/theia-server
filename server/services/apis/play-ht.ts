@@ -18,21 +18,13 @@ export const genSpeech = async (text: string, voice: string, speed: number) => {
   };
 
   try {
-    const response = await axios.post(apiEndpoint, params, { headers: headers });
-    const data = response.data.split('data: ');
+    const response = await axios.post(apiEndpoint, params, {
+      headers: headers,
+    });
+    const data = response.data.split("data: ");
     return JSON.parse(data[data.length - 1]);
   } catch (error) {
     console.error(error);
     return null;
   }
-<<<<<<< HEAD
 };
-=======
-};
-
-// generateTTS(
-//   "Hello dear, I'm Téiá, your A I assistant. How can I help you?",
-//   "alphonso",
-//   1
-// );
->>>>>>> 4cd61cb (refactor sockets)

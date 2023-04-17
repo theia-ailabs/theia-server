@@ -7,7 +7,7 @@ import { getTime } from "./utils";
 
 server.listen(PORT, () => {
   console.log("Server running on port ", PORT);
-  socketConnect(io, Socket);
+  socketConnect(io);
   console.log(process.version);
   setInterval(() => {
     const time = getTime();
