@@ -15,7 +15,7 @@ export async function getSpeech(
       "X-USER-ID": VOICE_UID,
     },
     body: JSON.stringify({
-      speed: _spped,
+      speed: _speed,
       sample_rate: 24000,
       text: text,
       voice: _voice,
