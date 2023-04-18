@@ -27,5 +27,5 @@ export const io: any = new Server(server, {
     methods: ["GET", "POST"],
   },
   maxHttpBufferSize: 1e9, // 0.93 gigabyte
-  // pingTimeout: 20,
+  pingTimeout: 20,
 });
