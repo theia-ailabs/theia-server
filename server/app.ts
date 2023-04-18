@@ -1,6 +1,6 @@
 // init server
-import express, { Request, Response } from "express";
 import cors from "cors";
+import express, { Request, Response } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";

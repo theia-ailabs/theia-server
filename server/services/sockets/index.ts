@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { askChatGPT } from "../apis/openai";
 import { genSpeech } from "../apis/play-ht";
+import { getSpeech } from "../apis/humanVoices";
 
 export let usersConnected: number = 0;
 
@@ -40,12 +41,10 @@ const askTheiaSocket = (socket: Socket): void => {
       console.log(question);
       const response = await askChatGPT(question);
       console.log(response);
-      const speech = await genSpeech(response as string, "alphonso", 1);
+      const speech = await getSpeech(response as string);
       const ret = {
         text: response,
-        audio: speech.url,
-        duration: speech.duration,
-        size: speech.size,
+        audio: speech,
       };
       socket.emit("theiaRes", ret);
     } else {
