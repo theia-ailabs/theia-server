@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { askChatGPT } from "../apis/openai";
 import { genSpeech } from "../apis/play-ht";
 import { getSpeech } from "../apis/humanVoices";
+import { Z_UNKNOWN } from "zlib";
 
 export let usersConnected: number = 0;
 
@@ -40,13 +41,13 @@ const askTheiaSocket = (socket: Socket): void => {
     if (question) {
       console.log(question);
       const response = await askChatGPT(question);
-      console.log(response);
-      const speech = await getSpeech(response as string);
-      const ret = {
+      const res = {
         text: response,
-        audio: speech,
+        audio: new AudioBuffer({ length: 0, sampleRate: 0 }),
       };
-      socket.emit("theiaRes", ret);
+      socket.emit("theiaRes", res);
+      res.audio = await getSpeech(res.text as string);
+      socket.emit("theiaRes", res);
     } else {
       const msgErr = `❌ ERROR: Input msg wrong.`;
       socket.emit("theiaRes", msgErr);
