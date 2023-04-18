@@ -1,8 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { askChatGPT } from "../apis/openai";
-import { genSpeech } from "../apis/play-ht";
+// import { genSpeech } from "../apis/play-ht";
 import { getSpeech } from "../apis/humanVoices";
-import { AudioBuffer } from "audiobuffer";
 
 export let usersConnected: number = 0;
 
@@ -42,8 +41,8 @@ const askTheiaSocket = (socket: Socket): void => {
       console.log(question);
       const response = await askChatGPT(question);
       const res = {
-        text: response,
-        audio: new AudioBuffer({ length: 0, sampleRate: 0 }),
+        text: response as string,
+        audio: [] as unknown as AudioBuffer,
       };
       socket.volatile.emit("theiaRes", res);
       res.audio = await getSpeech(res.text as string);
