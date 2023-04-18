@@ -20,7 +20,7 @@ export const server: any = createServer(app);
 export const io: any = new Server(server, {
   cors: {
     origin: [
-      "localhost:8080", // Remove * in production
+      "*", // Remove * in production
       "thei.app",
       "ia.estate",
     ],
