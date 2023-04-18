@@ -1,12 +1,13 @@
 import { Server, Socket } from "socket.io";
 import { askChatGPT } from "../apis/openai";
-// import { genSpeech } from "../apis/play-ht";
 import { getSpeech } from "../apis/humanVoices";
 
+export let socketId: string = "";
 export let usersConnected: number = 0;
 
 export const socketConnect = (io: Server): void => {
   io.on("connection", (socket: Socket) => {
+    socketId = socket.id;
     // Connection
     usersConnected++;
     socket.emit("nUsers", usersConnected);
