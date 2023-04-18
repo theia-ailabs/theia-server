@@ -3,7 +3,8 @@ import { VOICE_API, VOICE_UID, VOICE_KEY } from "../../config";
 
 export async function getSpeech(
   text: string,
-  _voice = "abram"
+  _voice = "abram",
+  _speed = 1
 ): Promise<AudioBuffer> {
   const options = {
     method: "POST",
@@ -14,7 +15,7 @@ export async function getSpeech(
       "X-USER-ID": VOICE_UID,
     },
     body: JSON.stringify({
-      speed: 1,
+      speed: _spped,
       sample_rate: 24000,
       text: text,
       voice: _voice,
