@@ -37,7 +37,7 @@ const searchUserSocket = (socket: Socket): void => {
 };
 
 const askTheiaSocket = (socket: Socket): void => {
-  socket.on("askTheia", async (question: string) => {
+  socket.volatile.on("askTheia", async (question: string) => {
     if (question) {
       console.log(question);
       const response = await askChatGPT(question);
@@ -45,9 +45,9 @@ const askTheiaSocket = (socket: Socket): void => {
         text: response,
         audio: new AudioBuffer({ length: 0, sampleRate: 0 }),
       };
-      socket.emit("theiaRes", res);
+      socket.volatile.emit("theiaRes", res);
       res.audio = await getSpeech(res.text as string);
-      socket.emit("theiaRes", res);
+      socket.volatile.emit("theiaRes", res);
     } else {
       const msgErr = `❌ ERROR: Input msg wrong.`;
       socket.emit("theiaRes", msgErr);
