@@ -47,6 +47,7 @@ const askTheiaSocket = (socket: Socket): void => {
       };
       socket.volatile.emit("theiaRes", res);
       res.audio = await getSpeechUrl(res.text);
+      console.log(res.audio);
       socket.volatile.emit("theiaRes", res);
     } else {
       const msgErr = `❌ ERROR: Input msg undefined.`;
