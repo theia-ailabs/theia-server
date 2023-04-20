@@ -44,8 +44,8 @@ const askTheiaSocket = (socket: Socket): void => {
     async (
       question: string,
       _voice = "denis",
-      _userVoice = "larry",
-      _speed = 1
+      _speed = 1,
+      _userVoice = "larry"
     ) => {
       if (question) {
         messageId++;
