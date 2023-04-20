@@ -37,22 +37,25 @@ const searchUserSocket = (socket: Socket): void => {
 };
 
 const askTheiaSocket = (socket: Socket): void => {
-  socket.volatile.on("askTheia", async (question: string) => {
-    if (question) {
-      console.log(question);
-      const response = await askChatGPT(question);
-      const res = {
-        text: response as string,
-        audio: "",
-      };
-      socket.volatile.emit("theiaRes", res);
-      res.audio = await getSpeechUrl(res.text);
-      console.log(res.audio);
-      socket.volatile.emit("theiaRes", res);
-    } else {
-      const msgErr = `❌ ERROR: Input msg undefined.`;
-      socket.volatile.emit("theiaRes", msgErr);
-      console.log("askTheiaSocket", msgErr);
+  socket.volatile.on(
+    "askTheia",
+    async (question: string, _voice = "elena", _speed = 1) => {
+      if (question) {
+        console.log(question);
+        const response = await askChatGPT(question);
+        const res = {
+          text: response as string,
+          audio: "",
+        };
+        socket.volatile.emit("theiaRes", res);
+        res.audio = await getSpeechUrl(res.text, _voice, _speed);
+        console.log(res.audio);
+        socket.volatile.emit("theiaRes", res);
+      } else {
+        const msgErr = `❌ ERROR: Input msg undefined.`;
+        socket.volatile.emit("theiaRes", msgErr);
+        console.log("askTheiaSocket", msgErr);
+      }
     }
-  });
+  );
 };
