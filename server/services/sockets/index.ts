@@ -38,16 +38,17 @@ const searchUserSocket = (socket: Socket): void => {
 };
 
 const askTheiaSocket = (socket: Socket): void => {
+  let messageId = -1;
   socket.volatile.on(
     "askTheia",
     async (
       question: string,
       _voice = "denis",
       _userVoice = "larry",
-      _speed = 1,
-      _i = 0
+      _speed = 1
     ) => {
       if (question) {
+        messageId++;
         // 1 Emit thinking
         const res: AskTheiaRet = {
           question: question,
@@ -58,10 +59,10 @@ const askTheiaSocket = (socket: Socket): void => {
           duration: 0,
           size: 0,
           timestamp: Date.now(),
-          messageId: _i + "_" + socket.id + "_" + Date.now(),
+          messageId: messageId + "_" + socket.id + "_" + Date.now(),
           computed_in: 0,
         };
-        socket.volatile.emit("theiaRes", res); // thinking
+        socket.volatile.emit("theiaRes", res, messageId); // thinking
         // 2 Emit user audio
         const audio = await getSpeechUrl(
           res.question + "  ...  ",
@@ -69,11 +70,11 @@ const askTheiaSocket = (socket: Socket): void => {
           _speed
         );
         res.audio = audio.url;
-        socket.volatile.emit("theiaRes", res); // user audio
+        socket.volatile.emit("theiaRes", res, messageId); // user audio
         // 3 Emit Theia answer (text)
         res.answer = (await askChatGPT(question)) as string;
         res.words = res.answer.split(" ").length;
-        socket.volatile.emit("theiaRes", res); // text
+        socket.volatile.emit("theiaRes", res, messageId); // text
         // 4 Emit Theia speech (audio)
         const speech = await getSpeechUrl(
           res.answer + "  ...  ",
@@ -83,7 +84,7 @@ const askTheiaSocket = (socket: Socket): void => {
         res.audio = speech.url;
         res.duration = speech.duration;
         res.size = speech.size;
-        socket.volatile.emit("theiaRes", res); // audio
+        socket.volatile.emit("theiaRes", res, messageId); // audio
       } else {
         const msgErr = `❌ ERROR: Input msg undefined.`;
         socket.volatile.emit("theiaRes", msgErr); // Err
