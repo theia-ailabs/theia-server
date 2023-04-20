@@ -40,21 +40,30 @@ const searchUserSocket = (socket: Socket): void => {
 const askTheiaSocket = (socket: Socket): void => {
   socket.volatile.on(
     "askTheia",
-    async (question: string, _voice = "larry", _speed = 1) => {
+    async (question: string, _voice = "larry", _speed = 1, _i = 0) => {
       if (question) {
         const res: AskTheiaRet = {
-          text: "Thinking... ",
-          words: 0,
+          question: question,
           audio: "",
+          answer: "Thinking... ",
+          words: 0,
+          speech: "",
           duration: 0,
           size: 0,
+          timestamp: Date.now(),
+          messageId: _i,
+          socketId: socket.id,
+          computed_in: 0,
         };
         socket.volatile.emit("theiaRes", res); // 1 thinking
-        console.log(question);
-        res.text = (await askChatGPT(question)) as string;
-        res.words = res.text.split(" ").length;
+        res.answer = (await askChatGPT(question)) as string;
+        res.words = res.answer.split(" ").length;
         socket.volatile.emit("theiaRes", res); // 2 text
-        const speech = await getSpeechUrl(res.text + "  ...  ", _voice, _speed);
+        const speech = await getSpeechUrl(
+          res.answer + "  ...  ",
+          _voice,
+          _speed
+        );
         res.audio = speech.url;
         res.duration = speech.duration;
         res.size = speech.size;

@@ -105,11 +105,17 @@ export interface UsersFlags {
 }
 
 export interface AskTheiaRet {
-  text: string;
-  words: number;
+  question: string;
   audio: string;
+  answer: string;
+  words: number;
+  speech: string;
   duration: number;
   size: number;
+  timestamp: number;
+  messageId: number;
+  socketId: string;
+  computed_in: number;
 }
 
 export interface SpeechUrlRet {
