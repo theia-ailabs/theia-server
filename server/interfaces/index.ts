@@ -113,8 +113,7 @@ export interface AskTheiaRet {
   duration: number;
   size: number;
   timestamp: number;
-  messageId: number;
-  socketId: string;
+  messageId: string;
   computed_in: number;
 }
 

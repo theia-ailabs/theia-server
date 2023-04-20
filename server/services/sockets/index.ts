@@ -51,8 +51,7 @@ const askTheiaSocket = (socket: Socket): void => {
           duration: 0,
           size: 0,
           timestamp: Date.now(),
-          messageId: _i,
-          socketId: socket.id,
+          messageId: _i + "_" + socket.id + "_" + Date.now(),
           computed_in: 0,
         };
         socket.volatile.emit("theiaRes", res); // 1 thinking
