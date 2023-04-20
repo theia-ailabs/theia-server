@@ -40,8 +40,15 @@ const searchUserSocket = (socket: Socket): void => {
 const askTheiaSocket = (socket: Socket): void => {
   socket.volatile.on(
     "askTheia",
-    async (question: string, _voice = "larry", _speed = 1, _i = 0) => {
+    async (
+      question: string,
+      _voice = "denis",
+      _userVoice = "larry",
+      _speed = 1,
+      _i = 0
+    ) => {
       if (question) {
+        // 1 Emit thinking
         const res: AskTheiaRet = {
           question: question,
           audio: "",
@@ -54,10 +61,20 @@ const askTheiaSocket = (socket: Socket): void => {
           messageId: _i + "_" + socket.id + "_" + Date.now(),
           computed_in: 0,
         };
-        socket.volatile.emit("theiaRes", res); // 1 thinking
+        socket.volatile.emit("theiaRes", res); // thinking
+        // 2 Emit user audio
+        const audio = await getSpeechUrl(
+          res.question + "  ...  ",
+          _userVoice,
+          _speed
+        );
+        res.audio = audio.url;
+        socket.volatile.emit("theiaRes", res); // user audio
+        // 3 Emit Theia answer (text)
         res.answer = (await askChatGPT(question)) as string;
         res.words = res.answer.split(" ").length;
-        socket.volatile.emit("theiaRes", res); // 2 text
+        socket.volatile.emit("theiaRes", res); // text
+        // 4 Emit Theia speech (audio)
         const speech = await getSpeechUrl(
           res.answer + "  ...  ",
           _voice,
@@ -66,7 +83,7 @@ const askTheiaSocket = (socket: Socket): void => {
         res.audio = speech.url;
         res.duration = speech.duration;
         res.size = speech.size;
-        socket.volatile.emit("theiaRes", res); // 3 audio
+        socket.volatile.emit("theiaRes", res); // audio
       } else {
         const msgErr = `❌ ERROR: Input msg undefined.`;
         socket.volatile.emit("theiaRes", msgErr); // Err
