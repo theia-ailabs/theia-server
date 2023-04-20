@@ -81,7 +81,7 @@ const askTheiaSocket = (socket: Socket): void => {
           _voice,
           _speed
         );
-        res.audio = speech.url;
+        res.speech = speech.url;
         res.duration = speech.duration;
         res.size = speech.size;
         socket.volatile.emit("theiaRes", res, messageId); // audio
