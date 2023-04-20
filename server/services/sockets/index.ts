@@ -85,6 +85,8 @@ const askTheiaSocket = (socket: Socket): void => {
         res.duration = speech.duration;
         res.size = speech.size;
         socket.volatile.emit("theiaRes", res, messageId); // audio
+        console.log(res);
+        messageId--;
       } else {
         const msgErr = `❌ ERROR: Input msg undefined.`;
         socket.volatile.emit("theiaRes", msgErr); // Err
