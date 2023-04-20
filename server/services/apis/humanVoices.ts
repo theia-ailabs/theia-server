@@ -1,5 +1,6 @@
 import axios from "axios";
 import { VOICE_API, VOICE_UID, VOICE_KEY } from "../../config";
+import { SpeechUrlRet } from "../../interfaces";
 
 export async function getSpeech(
   text: string,
@@ -34,17 +35,11 @@ export async function getSpeech(
   }
 }
 
-interface SpeechUrlReturn {
-  url: string;
-  duration: number;
-  size: number;
-}
-
 export async function getSpeechUrl(
   text: string,
   _voice = "abram",
   _speed = 1
-): Promise<SpeechUrlReturn> {
+): Promise<SpeechUrlRet> {
   try {
     const url = VOICE_API + "tts";
     const options = {

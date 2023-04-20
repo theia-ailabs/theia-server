@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { askChatGPT } from "../apis/openai";
 import { getSpeechUrl } from "../apis/humanVoices";
+import { AskTheiaRet } from "../../interfaces";
 
 export let usersConnected = 0;
 export let socketId = "";
@@ -41,8 +42,7 @@ const askTheiaSocket = (socket: Socket): void => {
     "askTheia",
     async (question: string, _voice = "larry", _speed = 1) => {
       if (question) {
-        audio;
-        const res = {
+        const res: AskTheiaRet = {
           text: "Thinking... ",
           words: 0,
           audio: "",
