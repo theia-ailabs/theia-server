@@ -21,7 +21,7 @@ export const socketConnect = (io: Server): void => {
       socket.emit("nUsers", usersConnected);
     });
     // Errors
-    socket.on("error", (err: any) => {
+    socket.on("error", (err: Error) => {
       console.log("ERROR: Socket error:\n", err);
     });
     // Sockets
