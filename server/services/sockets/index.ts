@@ -45,16 +45,19 @@ const askTheiaSocket = (socket: Socket): void => {
           text: "Thinking... ",
           audio: "",
         };
-        socket.volatile.emit("theiaRes", res); // 1
+        socket.volatile.emit("theiaRes", res); // 1 thinking
         console.log(question);
-        const response = await askChatGPT(question);
-        res.text = response as string;
-        socket.volatile.emit("theiaRes", res); // 2
-        res.audio = await getSpeechUrl(res.text + "  ...  ", _voice, _speed);
-        socket.volatile.emit("theiaRes", res); // 3
+        res.text = (await askChatGPT(question)) as string;
+        socket.volatile.emit("theiaRes", res); // 2 text
+        res.audio = (await getSpeechUrl(
+          res.text + "  ...  ",
+          _voice,
+          _speed
+        )) as string;
+        socket.volatile.emit("theiaRes", res); // 3 audio
       } else {
         const msgErr = `❌ ERROR: Input msg undefined.`;
-        socket.volatile.emit("theiaRes", msgErr); // Error
+        socket.volatile.emit("theiaRes", msgErr); // Err
         console.log("askTheiaSocket", msgErr);
       }
     }
