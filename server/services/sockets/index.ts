@@ -39,12 +39,12 @@ const searchUserSocket = (socket: Socket): void => {
 const askTheiaSocket = (socket: Socket): void => {
   socket.volatile.on(
     "askTheia",
-    async (question: string, _voice = "elena", _speed = 1) => {
+    async (question: string, _voice = "larry", _speed = 1) => {
       if (question) {
         console.log(question);
         const response = await askChatGPT(question);
         const res = {
-          text: response as string,
+          text: (response as string) + " ... ",
           audio: "",
         };
         socket.volatile.emit("theiaRes", res);
