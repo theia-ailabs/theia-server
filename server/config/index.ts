@@ -7,3 +7,5 @@ export const OPENAI_KEY = String(process.env.OPENAI_KEY);
 export const VOICE_API = String(process.env.VOICE_API);
 export const VOICE_UID = String(process.env.VOICE_UID);
 export const VOICE_KEY = String(process.env.VOICE_KEY);
+export const CHESS_API = String(process.env.CHESS_API);
+export const CHESS_KEY = String(process.env.CHESS_KEY);
