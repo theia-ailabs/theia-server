@@ -1,20 +1,19 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import session from "express-session";
 import crypto from "crypto";
-import { CHESS_API, CHESS_KEY } from "../../config";
+import axios from "axios";
 
 const app = express();
-const port = 3000;
-const clientId = "example-backend";
+const clientId = "attentialloscacco";
 
 app.use(session({ resave: true, secret: "SECRET", saveUninitialized: true }));
 
-app.get("/", (req: any, res: any) => {
+app.get("/", (req: Request, res: Response) => {
   res.send('<a href="/login">Login</a>');
 });
 
 // LOGIN
-const base64URLEncode = (str: any) => {
+const base64URLEncode = (str: string | Buffer) => {
   return str
     .toString("base64")
     .replace(/\+/g, "-")
@@ -27,9 +26,10 @@ const sha256 = (buffer: Buffer) =>
 
 const createVerifier = () => base64URLEncode(crypto.randomBytes(32));
 
-const createChallenge = (verifier: any) => base64URLEncode(sha256(verifier));
+const createChallenge = (verifier: string | Buffer) =>
+  base64URLEncode(sha256(verifier as Buffer));
 
-app.get("/login", async (req: any, res: any) => {
+app.get("/login", async (req: Request | any, res: Response) => {
   const url = req.protocol + "://" + req.get("host") + req.baseUrl;
   const verifier = createVerifier();
   const challenge = createChallenge(verifier);
@@ -48,30 +48,43 @@ app.get("/login", async (req: any, res: any) => {
 });
 
 // CALLBACK
-const getLichessToken = async (authCode: string, verifier: any, url: string) =>
-  await fetch("https://lichess.org/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+const getLichessToken = async (
+  authCode: string,
+  verifier: string,
+  url: string
+) => {
+  const response = await axios.post(
+    "https://lichess.org/api/token",
+    {
       grant_type: "authorization_code",
       redirect_uri: `${url}/callback`,
       client_id: clientId,
       code: authCode,
       code_verifier: verifier,
-    }),
-  }).then((res) => res.json());
+    },
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return response.data;
+};
 
-const getLichessUser = async (accessToken: string = CHESS_KEY) =>
-  await fetch(CHESS_API + "account", {
+const getLichessUser = async (accessToken: string) => {
+  const response = await axios.get("https://lichess.org/api/account", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  }).then((res) => res.json());
+  });
+  console.log(response.data);
+  return response.data;
+};
 
-app.get("/callback", async (req: any, res: any) => {
+app.get("/callback", async (req: Request | any, res: Response) => {
   const url = req.protocol + "://" + req.get("host") + req.baseUrl;
   const verifier = req.session.codeVerifier;
-  const lichessToken = await getLichessToken(req.query.code, verifier, url);
+  const lichessToken = await getLichessToken(
+    req.query.code as string,
+    verifier,
+    url
+  );
 
   if (!lichessToken.access_token) {
     res.send("Failed getting token");
@@ -82,4 +95,6 @@ app.get("/callback", async (req: any, res: any) => {
   res.send(`Logged in as ${lichessUser.username}`);
 });
 
-app.listen(port);
+// app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+getLichessUser("lip_95FGJRUVzQJL0sUsOSoi");
