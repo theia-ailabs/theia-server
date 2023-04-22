@@ -97,4 +97,4 @@ app.get("/callback", async (req: Request | any, res: Response) => {
 
 // app.listen(port, () => console.log(`Server is running on port ${port}`));
 
-// getLichessUser("lip_95FGJRUVzQJL0sUsOSoi");
+getLichessUser("lip_95FGJRUVzQJL0sUsOSoi");
