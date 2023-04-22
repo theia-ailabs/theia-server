@@ -48,7 +48,7 @@ app.get("/login", async (req: Request | any, res: Response) => {
 });
 
 // CALLBACK
-const getLichessToken = async (
+export const getLichessToken = async (
   authCode: string,
   verifier: string,
   url: string
@@ -67,7 +67,7 @@ const getLichessToken = async (
   return response.data;
 };
 
-const getLichessUser = async (accessToken: string) => {
+export const getLichessUser = async (accessToken: string) => {
   const response = await axios.get("https://lichess.org/api/account", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -97,4 +97,4 @@ app.get("/callback", async (req: Request | any, res: Response) => {
 
 // app.listen(port, () => console.log(`Server is running on port ${port}`));
 
-getLichessUser("lip_95FGJRUVzQJL0sUsOSoi");
+// getLichessUser("lip_95FGJRUVzQJL0sUsOSoi");
