@@ -1,3 +1,5 @@
+import { chessColors, chessRows, chessColumns } from "../constants";
+
 export interface State {
   // user mood
   mood: string;
@@ -121,4 +123,9 @@ export interface SpeechUrlRet {
   url: string;
   duration: number;
   size: number;
+}
+
+export interface LichessApi {
+  createGame: (token: string) => Promise<string>;
+  makeMove: (gameId: string, move: string, token: string) => Promise<void>;
 }

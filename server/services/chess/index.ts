@@ -1,6 +1,11 @@
-import { LichessChessPlayer } from "./play";
+import newGame from "./play";
+import getLichessUser from "./auth";
 import { LICHESS_KEY } from "../../config";
 
-const chess = new LichessChessPlayer(LICHESS_KEY);
+const gameID = newGame(LICHESS_KEY);
 
-chess.play();
+console.log("gameID: ", gameID);
+
+const userInfo = getLichessUser(LICHESS_KEY);
+
+console.log("userInfo: ", userInfo);

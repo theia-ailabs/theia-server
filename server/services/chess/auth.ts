@@ -24,28 +24,10 @@ const base64URLEncode = (str: string | Buffer) => {
 const sha256 = (buffer: Buffer) =>
   crypto.createHash("sha256").update(buffer).digest();
 
-const createVerifier = () => base64URLEncode(crypto.randomBytes(32));
+export const createVerifier = () => base64URLEncode(crypto.randomBytes(32));
 
-const createChallenge = (verifier: string | Buffer) =>
+export const createChallenge = (verifier: string | Buffer) =>
   base64URLEncode(sha256(verifier as Buffer));
-
-app.get("/login", async (req: Request | any, res: Response) => {
-  const url = req.protocol + "://" + req.get("host") + req.baseUrl;
-  const verifier = createVerifier();
-  const challenge = createChallenge(verifier);
-  req.session.codeVerifier = verifier;
-  res.redirect(
-    "https://lichess.org/oauth?" +
-      new URLSearchParams({
-        response_type: "code",
-        client_id: clientId,
-        redirect_uri: `${url}/callback`,
-        scope: "preference:read",
-        code_challenge_method: "S256",
-        code_challenge: challenge,
-      })
-  );
-});
 
 // CALLBACK
 export const getLichessToken = async (
@@ -67,7 +49,7 @@ export const getLichessToken = async (
   return response.data;
 };
 
-export const getLichessUser = async (accessToken: string) => {
+const getLichessUser = async (accessToken: string) => {
   const response = await axios.get("https://lichess.org/api/account", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -77,24 +59,4 @@ export const getLichessUser = async (accessToken: string) => {
   return response.data;
 };
 
-app.get("/callback", async (req: Request | any, res: Response) => {
-  const url = req.protocol + "://" + req.get("host") + req.baseUrl;
-  const verifier = req.session.codeVerifier;
-  const lichessToken = await getLichessToken(
-    req.query.code as string,
-    verifier,
-    url
-  );
-
-  if (!lichessToken.access_token) {
-    res.send("Failed getting token");
-    return;
-  }
-
-  const lichessUser = await getLichessUser(lichessToken.access_token);
-  res.send(`Logged in as ${lichessUser.username}`);
-});
-
-// app.listen(port, () => console.log(`Server is running on port ${port}`));
-
-getLichessUser("lip_95FGJRUVzQJL0sUsOSoi");
+export default getLichessUser;
